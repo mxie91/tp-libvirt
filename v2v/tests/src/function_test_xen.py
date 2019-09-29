@@ -433,7 +433,9 @@ def run(test, params, env):
                 if '/' in line:
                     params['disk_count'] += 1
             logging.info('Total disks: %d', params['disk_count'])
-
+        if checkpoint == 'encrypted_disk':
+            v2v_params['v2v_opts'] += " --echo-keys"
+            v2v_params['custom_inputs'] = params.get('disk_password', 'redhat123')
         # Check if xen guest exists again
         if not virsh.domain_exists(vm_name, uri=uri):
             logging.error('VM %s not exists', vm_name)
